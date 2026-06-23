@@ -1,53 +1,57 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import { signup } from "../../services/authentication";
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { authClient } from '../../services/authentication'
 
 export function SignupPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+  const [error, setError] = useState(null)
+  const navigate = useNavigate()
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    try {
-      await signup(email, password);
-      navigate("/login");
-    } catch (err) {
-      console.error(err);
-      navigate("/signup");
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError(null)
+
+    const { data, error } = await authClient.signUp.email({
+      email,
+      password,
+      name
+    })
+
+    if (error) {
+      setError(error.message)
+      return
     }
-  }
 
-  function handleEmailChange(event) {
-    setEmail(event.target.value);
-  }
-
-  function handlePasswordChange(event) {
-    setPassword(event.target.value);
+    navigate('/feed')
   }
 
   return (
-    <>
-      <h2>Signup</h2>
+    <div>
+      <h1>Sign up</h1>
+      {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email:</label>
         <input
-          id="email"
           type="text"
-          value={email}
-          onChange={handleEmailChange}
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
-        <label htmlFor="password">Password:</label>
         <input
-          placeholder="Password"
-          id="password"
-          type="password"
-          value={password}
-          onChange={handlePasswordChange}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
-        <input role="submit-button" id="submit" type="submit" value="Submit" />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit">Sign up</button>
       </form>
-    </>
-  );
+    </div>
+  )
 }
