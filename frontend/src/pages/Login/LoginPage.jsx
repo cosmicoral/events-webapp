@@ -1,53 +1,50 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import { login } from "../../services/authentication";
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { authClient } from "../../services/authentication"
 
 export function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState(null)
+  
+  const navigate = useNavigate()
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    try {
-      const token = await login(email, password);
-      localStorage.setItem("token", token);
-      navigate("/posts");
-    } catch (err) {
-      console.error(err);
-      navigate("/login");
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError(null)
+
+    const { data, error } = await authClient.signIn.email({
+      email,
+      password
+    })
+
+    if (error) {
+      setError(error.message)
+      return
     }
-  }
 
-  function handleEmailChange(event) {
-    setEmail(event.target.value);
-  }
-
-  function handlePasswordChange(event) {
-    setPassword(event.target.value);
+    navigate('/feed')
   }
 
   return (
-    <>
-      <h2>Login</h2>
+    <div>
+      <h1>Log in</h1>
+      {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email:</label>
         <input
-          id="email"
-          type="text"
+          type="email"
+          placeholder="Email"
           value={email}
-          onChange={handleEmailChange}
+          onChange={(e) => setEmail(e.target.value)}
         />
-        <label htmlFor="password">Password:</label>
         <input
-          id="password"
           type="password"
+          placeholder="Password"
           value={password}
-          onChange={handlePasswordChange}
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <input role="submit-button" id="submit" type="submit" value="Submit" />
+        <button type="submit">Log in</button>
       </form>
-    </>
-  );
+    </div>
+  )
 }

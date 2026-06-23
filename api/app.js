@@ -1,40 +1,37 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+require('dotenv').config()
+const express = require('express')
+const cors = require('cors')
+const { toNodeHandler } = require('better-auth/node')
+const { auth } = require('./lib/auth')
 
-const usersRouter = require("./routes/users");
-const postsRouter = require("./routes/posts");
-const authenticationRouter = require("./routes/authentication");
-const tokenChecker = require("./middleware/tokenChecker");
+const app = express()
 
-const app = express();
+// CORS — must allow credentials so cookies work
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}))
 
-// Allow requests from any client
-// docs: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
-// docs: https://expressjs.com/en/resources/middleware/cors.html
-app.use(cors());
+// better-auth handler — MUST come before express.json()
+app.all('/api/auth/*', toNodeHandler(auth))
 
-// Parse JSON request bodies, made available on `req.body`
-app.use(bodyParser.json());
+// JSON parser for everything else
+app.use(express.json())
 
-// API Routes
-app.use("/users", usersRouter);
-app.use("/posts", tokenChecker, postsRouter);
-app.use("/tokens", authenticationRouter);
+// Health check route so we can test the server is up
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' })
+})
 
-// 404 Handler
+// 404 handler
 app.use((_req, res) => {
-  res.status(404).json({ err: "Error 404: Not Found" });
-});
+  res.status(404).json({ err: 'Error 404: Not Found' })
+})
 
 // Error handler
 app.use((err, _req, res, _next) => {
-  console.error(err);
-  if (process.env.NODE_ENV === "development") {
-    res.status(500).send(err.message);
-  } else {
-    res.status(500).json({ err: "Something went wrong" });
-  }
-});
+  console.error(err)
+  res.status(500).json({ err: 'Something went wrong' })
+})
 
-module.exports = app;
+module.exports = app
