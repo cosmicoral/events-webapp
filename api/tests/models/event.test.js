@@ -45,7 +45,7 @@ describe("Event model", () => {
                 expect(saved._id).toBeDefined();
         });
         
-        test("adds createdAt and updatedAt timestamps automatically", async  => {
+        test("adds createdAt and updatedAt timestamps automatically", async () => {
             const event = new Event(validEvent());
             const saved = await event.save();
 
