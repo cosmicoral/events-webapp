@@ -41,6 +41,21 @@ const updateFavouriteArtists = async (req, res) => {
 }
 
 
-const updateLocation = async (req, res) => { }
+const updateLocation = async (req, res) => { 
+    try {
+        const { homeLocation } = req.body
+        if (!homeLocation) {
+            return res.status(404).json({error: "User must provide a new location"})
+        }
+        const profile = await UserProfile.findOneAndUpdate(
+            { authUserId: req.user.id },
+            { homeLocation },
+            { new: true }
+        )
+        return res.json( { profile } )
+    } catch (error) {
+        console.error(error)
+    }
+}
 
 module.exports = { updateLocation, getMyProfile, updateFavouriteArtists }

@@ -78,4 +78,69 @@ describe("profile controller", () => {
             expect(res.json).toHaveBeenCalledWith({ error: "User must provide artists to update with" })
         });
     });
+
+    describe('updateLocation', () => {
+        test('should update the homeLocation object', async () => {
+            //updated profile for testing
+            const updatedProfile = {
+                authUserId: "user-123",
+                homeLocation: {
+                    city: "London",
+                    lat: 51.5072,
+                    long: 0.1276
+                }
+            }
+
+            //1. Program the scenario — "the DB has this profile for this user"
+
+            // Translation: "Hey fake findOneAndUpdate — next time you're called, 
+            //               return a promise that resolves to updatedProfile"
+            UserProfile.findOneAndUpdate.mockResolvedValue(updatedProfile)
+
+            // set up req body for what the update will be.
+            req.body = {
+                homeLocation: {
+                    city: "London",
+                    lat: 51.5072,
+                    long: 0.1276
+                }
+            }
+
+            await profileController.updateLocation(req, res)
+            // Internally, the controller does:
+            //   const profile = await UserProfile.findOneAndUpdate(...)
+            //   ^ this hits the fake, which gives back updatedProfile
+            //   So profile === updatedProfile now
+
+            // 3. Assert what the controller did with that data
+            expect(UserProfile.findOneAndUpdate).toHaveBeenCalledWith(
+                { authUserId: "user-123" },
+                {
+                    homeLocation: {
+                        city: "London",
+                        lat: 51.5072,
+                        long: 0.1276
+                    }
+                },
+                { new: true })
+
+            // Verify the controller responded with the updated profile
+            expect(res.json).toHaveBeenCalledWith({ profile: updatedProfile })
+        });
+        test('should return a 404 if the user does not provide a location to update', async () => {
+            //updated profile for testing
+            const updatedProfile = {
+                authUserId: "user-123",
+                homeLocation: {
+                    city: "Manchester",
+                    lat: 53.483959,
+                    long: -2.244644
+                }
+            }
+            UserProfile.findOneAndUpdate.mockResolvedValue(updatedProfile)
+            await profileController.updateLocation(req, res)
+            expect(res.status).toHaveBeenCalledWith(404)
+            expect(res.json).toHaveBeenCalledWith({ error: "User must provide a new location" })
+        });
+    });
 })
