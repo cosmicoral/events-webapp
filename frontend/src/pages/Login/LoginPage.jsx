@@ -13,41 +13,34 @@ export function LoginPage() {
   const handleLogInSubmit = async (e) => {
     e.preventDefault()
     setError(null)
-
     const { data, error } = await authClient.signIn.email({
       email,
       password
     })
-
     if (error) {
       setError(error.message)
       return
     }
-
     navigate('/feed')
   }
 
   const handleSignUpSubmit = async (e) => {
     e.preventDefault()
     setError(null)
-
     const { data, error } = await authClient.signUp.email({
       email,
       password,
       name
     })
-
     if (error) {
       setError(error.message)
       return
     }
-
     navigate('/feed')
   }
 
   return (
     <div>
-
       {!toggle ? (
         <>
           <h1>Log in</h1>
@@ -65,7 +58,7 @@ export function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button type="submit">Log in</button>
+            <button type="submit" name="Log in">Log in</button>
           </form>
         </>
       ) : (
@@ -91,13 +84,19 @@ export function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button type="submit">Sign up</button>
+            <button type="submit" name="Sign up">Sign up</button>
           </form>
-
-
         </>
       )}
-      <button onClick={(() => { setToggle(!toggle) })}>{toggle ? "login" : "signup"}</button>
+      <button data-testid="toggle-auth"
+        onClick={(() => {
+          setToggle(!toggle)
+          setError(null)
+          setEmail('')
+          setPassword('')
+        })}>
+        {toggle ? "Log in" : "Sign up"}
+      </button>
     </div>
   )
 }
