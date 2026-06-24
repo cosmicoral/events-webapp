@@ -1,4 +1,4 @@
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const BACKEND_URL = import.meta.env.VITE_API_URL;
 export async function getMyProfile() {
     const requestOptions = {
         method: "GET",
