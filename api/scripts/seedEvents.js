@@ -13,3 +13,4 @@ const seedEvents = async () => {
 }
 
 seedEvents().catch(console.error)
+
