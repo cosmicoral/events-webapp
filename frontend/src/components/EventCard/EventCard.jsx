@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { toggleFavouriteArtists } from "../../services/userProfile";
+import { authClient } from "../../services/authentication";
 
 function formatDate(dateString) {
     return new Date(dateString).toLocaleDateString("en-GB", {
@@ -12,6 +13,7 @@ function formatDate(dateString) {
 
 export default function EventCard({ event, favouriteArtists = [] }) {
     const navigate = useNavigate();
+    const { data: session } = authClient.useSession()
 
     if (!event) return null;
     
@@ -55,7 +57,11 @@ export default function EventCard({ event, favouriteArtists = [] }) {
                 <button
                     onClick={(e) => {
                         e.stopPropagation()
-                        toggleFavouriteArtists(event.artist)
+                        if (!session) {
+                            navigate("/login")
+                        } else {
+                            toggleFavouriteArtists(event.artist)
+                        }
                     }}
                 >
                     {isFollowing ? "Following" : "Follow"}
