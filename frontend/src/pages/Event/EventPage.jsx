@@ -54,6 +54,13 @@ export function EventPage() {
       <p>{event.genre}</p>
       <p>{event.city}</p>
 
+      {/* 
+        NOTE FOR THE TEAM: The ticketmaster description is not yet provided by the API. 
+        This conditional rendering ensures the UI is ready to display it safely 
+        once the backend field becomes available without crashing the page in the meantime.
+      */}
+      {event.description && <p className="event-description">{event.description}</p>}
+
       <button onClick={handleBuyTickets}>
         Buy Tickets
       </button>
