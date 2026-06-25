@@ -75,7 +75,7 @@ describe("profile controller", () => {
             // Verify the controller responded with the updated profile
             expect(res.json).toHaveBeenCalledWith({ profile: updatedProfile })
         });
-        test('should return 404 if no nartists are given to update', async () => {
+        test('should return 400 if no artists are given to update', async () => {
             const updatedProfile = {
                 authUserId: "user-123",
                 favouriteArtists: ["Idles", "Beyonce"]
@@ -85,7 +85,7 @@ describe("profile controller", () => {
             // await the controller func
             await profileController.updateFavouriteArtists(req, res)
             // So we check what the controller TRIED to do
-            expect(res.status).toHaveBeenCalledWith(404)
+            expect(res.status).toHaveBeenCalledWith(400)
             expect(res.json).toHaveBeenCalledWith({ error: "User must provide artists to update with" })
         });
     });
@@ -138,7 +138,7 @@ describe("profile controller", () => {
             // Verify the controller responded with the updated profile
             expect(res.json).toHaveBeenCalledWith({ profile: updatedProfile })
         });
-        test('should return a 404 if the user does not provide a location to update', async () => {
+        test('should return a 400 if the user does not provide a location to update', async () => {
             //updated profile for testing
             const updatedProfile = {
                 authUserId: "user-123",
@@ -150,7 +150,7 @@ describe("profile controller", () => {
             }
             UserProfile.findOneAndUpdate.mockResolvedValue(updatedProfile)
             await profileController.updateLocation(req, res)
-            expect(res.status).toHaveBeenCalledWith(404)
+            expect(res.status).toHaveBeenCalledWith(400)
             expect(res.json).toHaveBeenCalledWith({ error: "User must provide a new location" })
         });
     });
