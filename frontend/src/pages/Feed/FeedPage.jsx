@@ -41,6 +41,7 @@ export function FeedPage() {
       <EventFeed 
         events={events}
         favouriteArtists={favouriteArtists}
+        setFavouriteArtists={setFavouriteArtists}
       />
     </>
   );

@@ -11,7 +11,7 @@ function formatDate(dateString) {
     });
 }
 
-export default function EventCard({ event, favouriteArtists = [] }) {
+export default function EventCard({ event, favouriteArtists = [], setFavouriteArtists }) {
     const navigate = useNavigate();
     const { data: session } = authClient.useSession()
 
@@ -55,12 +55,13 @@ export default function EventCard({ event, favouriteArtists = [] }) {
                     {event.city}
                 </p>
                 <button
-                    onClick={(e) => {
+                    onClick={async (e) => {
                         e.stopPropagation()
                         if (!session) {
                             navigate("/login")
                         } else {
-                            toggleFavouriteArtists(event.artist)
+                            const newFavouriteArtists = await toggleFavouriteArtists(event.artist)
+                            setFavouriteArtists(newFavouriteArtists)
                         }
                     }}
                 >
