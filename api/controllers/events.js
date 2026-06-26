@@ -55,7 +55,7 @@ const getEventById = async (req, res) => {
         if (!event) {
             return res.status(404).json({ error: "Event not found" });
         }
-        res.status(200).json({ events: event });
+        res.status(200).json({ event: event });
     } catch (err) {
         console.error("getEventById error:", err);
         // Mongoose throws a CastError (meaning failed to convert/cast a value) if the id string is not a valid ObjectId

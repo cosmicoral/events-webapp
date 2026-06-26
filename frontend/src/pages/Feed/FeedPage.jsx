@@ -5,6 +5,7 @@ import { getEvents, getCities } from "../../services/events";
 import { getMyProfile } from "../../services/userProfile";
 import EventFeed from "../../components/EventFeed";
 import LogoutButton from "../../components/LogoutButton";
+import Recommendations from "../../components/Recommendations";
 
 export function FeedPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -92,6 +93,7 @@ function updateParam(key, value) {
   
 
 
+
   return (
     <>
       <h2>Events!</h2>
@@ -148,6 +150,9 @@ function updateParam(key, value) {
 
       <EventFeed
         events={filteredEvents}
+      <Recommendations favouriteArtists={favouriteArtists} events={events} />
+      <EventFeed
+        events={events}
         favouriteArtists={favouriteArtists}
       />
     </>
