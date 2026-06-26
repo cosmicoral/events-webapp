@@ -118,7 +118,6 @@ describe("Event model", () => {
                 venue: { name: "Test Venue" }, // no location
             }))
             const saved = await event.save()
-            console.log("HELLO")
             expect(saved._id).toBeDefined()
         })
     })
