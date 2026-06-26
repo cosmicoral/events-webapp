@@ -4,7 +4,7 @@ import { authClient } from "../../services/authentication";
 import { getEvents } from "../../services/events";
 import { getMyProfile } from "../../services/userProfile";
 import EventFeed from "../../components/EventFeed";
-import LogoutButton from "../../components/LogoutButton";
+import NavBar from "../../components/NavBar";
 
 export function FeedPage() {
   const [events, setEvents] = useState([]);
@@ -36,8 +36,8 @@ export function FeedPage() {
 
   return (
     <>
+      <NavBar />
       <h2>Events!</h2>
-      <LogoutButton />
       <EventFeed 
         events={events}
         favouriteArtists={favouriteArtists}
