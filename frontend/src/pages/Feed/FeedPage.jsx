@@ -167,9 +167,7 @@ export function FeedPage() {
         ))}
       </section>
 
-      {events.length > 0 &&
-        <Map events={events} height={"400px"}  width={"100%"} zoom={12}/>
-      }
+
 
       <EventFeed
         events={filteredEvents}
