@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const UserProfile = require("../models/userProfile")
 
-const MONGO_URI = "mongodb+srv://j412cff_db_user:L1BFVjhdTNMUrGSo@events.gwywfsl.mongodb.net/events"; 
+// const MONGO_URI = "mongodb+srv://j412cff_db_user:L1BFVjhdTNMUrGSo@events.gwywfsl.mongodb.net/events"; 
 
 async function cleanDatabase() {
     try {
