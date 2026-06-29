@@ -5,6 +5,8 @@ import { authClient } from "../../services/authentication";
 import Footer from "../../components/Footer";
 import NavBar from "../../components/NavBar";
 
+import Map from "../../components/Map"
+
 export function EventPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -35,7 +37,11 @@ export function EventPage() {
       <p>{event.city}</p>
       {event.description && <p className="event-description">{event.description}</p>}
       <Link to={event.ticketUrl}>buy tickets</Link>
+<<<<<<< mao
+      <Map events={[event]} height={"60vh"} width={"100%"} zoom={18} centre={{ lat: event.venue.location.coordinates[1], lng: event.venue.location.coordinates[0] }} />
+=======
       <Footer />
+>>>>>>> main
     </>
   );
 }
