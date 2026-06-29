@@ -110,6 +110,13 @@ export function FeedPage() {
   return (
     <>
       <NavBar />
+
+      <Recommendations
+        favouriteArtists={favouriteArtists}
+        setFavouriteArtists={setFavouriteArtists}  // ← is this there?
+        savedEvents={savedEvents}
+        onSavedToggled={handleSavedToggled}
+        events={events} />
       <h2>Events!</h2>
       {eventsError && <p>Something went wrong loading events.</p>}
       <section>
@@ -163,7 +170,7 @@ export function FeedPage() {
       <Map />
       <Recommendations 
         favouriteArtists={favouriteArtists} 
-        setFavouriteArtists={setFavouriteArtists}  // ← is this there?
+        setFavouriteArtists={setFavouriteArtists} 
         savedEvents={savedEvents}
         onSavedToggled={handleSavedToggled}
         events={events} />
