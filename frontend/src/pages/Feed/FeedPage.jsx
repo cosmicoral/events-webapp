@@ -6,6 +6,7 @@ import { getMyProfile } from "../../services/userProfile";
 import EventFeed from "../../components/EventFeed";
 import NavBar from "../../components/NavBar";
 import Recommendations from "../../components/Recommendations";
+import Map from "../../components/Map";
 
 export function FeedPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -159,6 +160,7 @@ function updateParam(key, value) {
         ))}
       </section>
 
+      <Map />
       <Recommendations 
         favouriteArtists={favouriteArtists} 
         setFavouriteArtists={setFavouriteArtists}  // ← is this there?
