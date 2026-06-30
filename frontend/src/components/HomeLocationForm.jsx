@@ -1,18 +1,11 @@
 import { useState } from "react"
-import { updateIsFirstLogin, updateHomeLocation } from "../services/userProfile";
+import { updateHomeLocation } from "../services/userProfile";
 import LocationSearch from "./LocationSearch";
 import { Button } from "@/components/ui/button";
 
-const HomeLocationForm = ({isFirstLoginSession, setIsFirstLoginSession}) => {
-    const [homeLocation, setHomeLocation] = useState(null);
-    const [success, setSuccess] = useState(false);
+const HomeLocationForm = ({ onLocationUpdated }) => {
     const [selectedLocation, setSelectedLocation] = useState(null)
     const [error, setError] = useState(null);
-
-    const completeFirstLogin = async () => {
-        await updateIsFirstLogin();
-        setIsFirstLoginSession(false);
-    };
 
     const handleLocationSubmit = async (e) => {
         e.preventDefault()
@@ -23,14 +16,15 @@ const HomeLocationForm = ({isFirstLoginSession, setIsFirstLoginSession}) => {
                 lat: selectedLocation.lat, 
                 long: selectedLocation.lng
             })
-            setHomeLocation(updatedCity)
-            setSuccess(true)
-            await completeFirstLogin()
-
+            if (onLocationUpdated) {
+                onLocationUpdated(updatedCity)
+            }
+            
         } catch (err) {
             setError(err)
         }
     }
+    
     return(
         <form onSubmit={handleLocationSubmit}>
             <LocationSearch onCitySelect={({ city, lat, lng }) => {
