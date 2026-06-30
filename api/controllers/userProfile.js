@@ -172,5 +172,19 @@ const getMyBookings = async (req, res) => {
         return res.status(500).json({ error: "Something went wrong" })
     }
 }
- 
-module.exports = { updateLocation, getMyProfile, toggleFavouriteArtists, toggleSavedEvent, addBooking, getMyBookings }
+
+const updateIsFirstLogin = async (req, res) => {
+    try {
+        await UserProfile.findOneAndUpdate(
+            { authUserId: req.user.id },
+            { isFirstLogin: false },
+            { new: true }
+        );
+        return res.sendStatus(204);
+    } catch (error) {
+        console.error(error)
+        return res.status(500).json({ error: "Something went wrong" })
+    }
+}
+
+module.exports = { updateLocation, getMyProfile, toggleFavouriteArtists, toggleSavedEvent, addBooking, getMyBookings, updateIsFirstLogin }

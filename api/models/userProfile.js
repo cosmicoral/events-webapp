@@ -6,6 +6,7 @@ const UserProfileSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    isFirstLogin: {type: Boolean, default: true},
     favouriteArtists: { type: [String], default: [] },
     savedEvents: { type: [String], default: [] }, 
     homeLocation: {
