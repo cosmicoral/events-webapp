@@ -79,6 +79,39 @@ export function EventPage() {
   if (error) return <p>Error loading event</p>;
   if (!event) return <p>Event not found</p>;
 
+
+
+
+  function pickEventCardImage(images) {
+    const targetRatio = 16 / 9;
+    const minWidth = 640; // covers most card sizes at 2x density
+
+    const sixteenNine = images
+      .filter(img => Math.abs(img.width / img.height - targetRatio) < 0.05)
+      .sort((a, b) => a.width - b.width);
+
+    return (
+      sixteenNine.find(img => img.width >= minWidth)
+      ?? sixteenNine.at(-1)
+      ?? images.sort((a, b) => b.width - a.width)[0]
+    );
+  }
+
+  let image = pickEventCardImage(event.images)
+
+  function formatDate(dateString) {
+    return new Date(dateString).toLocaleDateString("en-GB", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+    });
+  }
+
+  function formatTime(timeString) {
+    if (!timeString) return "";
+    return timeString.slice(0, 5); // takes "19:00" from "19:00:00"
+  }
+
   return (
     <>
       <NavBar />
@@ -135,25 +168,44 @@ export function EventPage() {
           </div>
         </div>
       )}
-      <h1>{event.name}</h1>
-      <p>{event.artist}</p>
-      <p>{event.genre}</p>
-      <p>{event.city}</p>
-      {event.description && <p className="event-description">{event.description}</p>}
 
-      <button
-        onClick={handleBuyTickets}
-        disabled={isButtonDisabled}
-        aria-label="Buy Tickets"
-      >
-        {buttonLabel()}
-      </button>
+      <div className="page">
+        <div className="event-mini">
+          <img src={event.images[0].url} />
+          <h2>{event.artist}</h2>
+          <button>follow artist</button>
+          <button>save event</button>
+        </div>
+        <div className="event-details">
+          <h1>{event.name}</h1>
+          <h2>{event.venue.name}</h2>
+          <h3>{formatDate(event.date)} {formatTime(event.time)}</h3>
+          <div className="tags">
+            {event.tags.map((t) => <h4>{t}</h4>)}
+          </div>
+          <button
+            onClick={handleBuyTickets}
+            disabled={isButtonDisabled}
+            aria-label="Buy Tickets"
+          >
+            {buttonLabel()}
+          </button>
 
-      {bookingState === "error" && (
-        <p role="alert">Something went wrong. Please try again.</p>
-      )}
-      <Link to={event.ticketUrl}>buy tickets</Link>
-      <Map events={[event]} height={"60vh"} width={"100%"} zoom={18} centre={{ lat: event.venue.location.coordinates[1], lng: event.venue.location.coordinates[0] }} />
+          {bookingState === "error" && (
+            <p role="alert">Something went wrong. Please try again.</p>
+          )}
+          <h3>Info</h3>
+          <ul className="desc">
+            {event.description.split(". ").map((a) => <li>{a}.</li>)}
+          </ul>
+          <h3>Venue</h3>
+          <h2>{`Doors Open At: ${event.time}`}</h2>
+          <h2>{event.venue.name}</h2>
+          <h3>{event.venue.address}</h3>
+          <h3>{event.venue.postcode}</h3>
+          <Map className="map" events={[event]} height={"60vh"} width={"100%"} zoom={18} centre={{ lat: event.venue.location?.coordinates[1], lng: event.venue.location?.coordinates[0] }} />
+        </div>
+      </div>
       <Footer />
     </>
   );
