@@ -28,6 +28,7 @@ function Map(props) {
             mapContainerStyle={containerStyle}
             center={props.centre || center}
             zoom={props.zoom}
+            className={"map"}
         >
             {props.events.filter((e) => e.venue?.location?.coordinates).map((e) => (
                 <MarkerF
