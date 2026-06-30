@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { updateIsFirstLogin, updateHomeLocation } from "../services/userProfile";
 import LocationSearch from "../components/LocationSearch";
+import HomeLocationForm from "./HomeLocationForm";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -12,7 +13,6 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 
-// will change to Shad dialog component once installed
 
 const HomeLocationUpdateDialog = ({isFirstLoginSession, setIsFirstLoginSession}) => {
     const [homeLocation, setHomeLocation] = useState(null);
@@ -54,27 +54,32 @@ const HomeLocationUpdateDialog = ({isFirstLoginSession, setIsFirstLoginSession})
     return(
             // updates isFirstLogin when dialog closed with X button
             // <Dialog open={isFirstLoginSession}>
-            <Dialog open={isFirstLoginSession} onOpenChange={(open) => {
-                if (!open) {
-                    handleClose();
+            <Dialog 
+                open={isFirstLoginSession} 
+                onOpenChange={(open) => {
+                    if (!open) {
+                        handleClose();
                 }
             }}>
-                <DialogContent>
+                <DialogContent
+                    showCloseButton={false}
+                >
                     <p>Set your location for a personalised feed!</p>
-                    <form onSubmit={handleLocationSubmit}>
+                    <HomeLocationForm 
+                        isFirstLoginSession={isFirstLoginSession}
+                        setIsFirstLoginSession={setIsFirstLoginSession}
+                    />
+                    {/* <form onSubmit={handleLocationSubmit}>
                         <LocationSearch onCitySelect={({ city, lat, lng }) => {
                             setSelectedLocation({ city, lat, lng })
                         }} />
                         <button type="submit">Update</button>
-                    </form>
+                    </form> */}
                     <p>Want to keep your location as Manchester for now? You can always update it on your profile page.</p>
-                {/* <DialogClose asChild>
+                <DialogClose asChild>
                     <Button type="button" onClick={handleClose}>Close</Button>
-                </DialogClose> */}
+                </DialogClose>
                 </DialogContent>
-
-                
-                {/* <button onClick={handleClose}>Close</button> */}
             </Dialog>
 
     )
