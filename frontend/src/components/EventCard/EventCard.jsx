@@ -7,7 +7,6 @@ function formatDate(dateString) {
         weekday: "short",
         day: "numeric",
         month: "short",
-        year: "numeric",
     });
 }
 
@@ -66,34 +65,45 @@ export default function EventCard({ event, favouriteArtists = [], setFavouriteAr
             onKeyDown={(e) => e.key === "Enter" && handleCardClick()}
             data-testid="event-card"
         >
-            {event.images && (
-                <img
-                    src={sizes.url}
-                    alt={`${event.name} image`}
-                    className="event-image"
-                />
-            )}
+            <div className="card-image-wrap">
+                {event.images && (
+                    <img
+                        src={sizes.url}
+                        alt={`${event.name} image`}
+                        className="event-image"
+                    />
+                )}
+                <button
+                    className="save-event-btn"
+                    data-testid="save-event-btn"
+                    onClick={handleSaveToFavourites}
+                    aria-label={isSaved ? "Remove from saved events" : "Save event"}
+                    title={isSaved ? "Remove from saved events" : "Save event"}
+                >
+                    {isSaved ? "♥" : "♡"}
+                </button>
+
+            </div>
 
             <div className="event_body">
-                <h2 className="event_title">{event.name}</h2>
-                <p className="event_artist">{event.artist}</p>
-                {(event.tags || []).map((tag, index) => (
-                    <p key={index}>{tag}</p>
-                ))}
+                <p className="event_title">{event.name}</p>
+                {/* <div className="event_tags">
+                    {(event.tags || []).map((tag, index) => (
+                        <p key={index}>{tag}</p>
+                    ))}
+                </div> */}
+
                 <p className="event_datetime">
                     {formatDate(event.date)}
-                    {/* {event.time && `· ${event.time}`} */}
-                    {event.time && ` ${formatTime(event.time)}`}
+                    {/* {event.time && ` ${formatTime(event.time)}`} */}
                 </p>
                 <p className="event_location">
-                    {event.venue?.name ? `${event.venue.name}, ` : ""}
-                    {event.city}
-
+                    {event.venue?.name ? `${event.venue.name}` : ""}
                 </p>
 
-                <div className="event_actions">
-                    {/* Save event to favourites */}
-                    <button
+                {/* <div className="event_actions"> */}
+                {/* Save event to favourites */}
+                {/* <button
                         className="save-event-btn"
                         data-testid="save-event-btn"
                         onClick={handleSaveToFavourites}
@@ -101,10 +111,10 @@ export default function EventCard({ event, favouriteArtists = [], setFavouriteAr
                         title={isSaved ? "Remove from saved events" : "Save event"}
                     >
                         {isSaved ? "♥" : "♡"}
-                    </button>
+                    </button> */}
 
-                    {/* Follow artist */}
-                    <button
+                {/* Follow artist */}
+                {/* <button
                         className="follow-artist-btn"
                         data-testid="follow-artist-btn"
                         onClick={async (e) => {
@@ -121,8 +131,8 @@ export default function EventCard({ event, favouriteArtists = [], setFavouriteAr
                         }}
                     >
                         {isFollowing ? "Following" : "Follow"}
-                    </button>
-                </div>
+                    </button> */}
+                {/* </div> */}
             </div>
         </div>
     );
