@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get("/me", requireAuth, userProfileController.getMyProfile);
 router.put("/me/location", requireAuth, userProfileController.updateLocation);
+router.put("/me/complete-first-login", requireAuth, userProfileController.updateIsFirstLogin);
 router.put("/me/favourite-artists", requireAuth, userProfileController.toggleFavouriteArtists);
 router.put("/me/saved-events", requireAuth, userProfileController.toggleSavedEvent);
 router.get("/me/saved-events", requireAuth, userProfileController.getSavedEvents);

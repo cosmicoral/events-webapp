@@ -11,6 +11,7 @@ export async function getMyProfile() {
             throw new Error("Unable to fetch user's profile");
         }
         const data = await response.json();
+        console.log(data);
         return data;
     } catch (err) {
         console.error(err)
@@ -157,4 +158,21 @@ export async function getMyBookings() {
         console.error(err)
         throw err
     }
+}
+
+export async function updateIsFirstLogin() {
+    try {
+        const requestOptions = {
+            method: "PUT",
+            credentials: "include",
+        }
+        const response = await fetch(`${BACKEND_URL}/profile/me/complete-first-login`, requestOptions)
+
+        if (response.status !== 204) {
+            throw new Error("Unable to update session info")
+        }
+    } catch (err) {
+        console.error(err)
+        throw err
+    }    
 }

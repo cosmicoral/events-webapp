@@ -6,8 +6,10 @@ import { getMyProfile, getMyBookings } from "../../services/userProfile";
 import EventFeed from "../../components/EventFeed";
 import NavBar from "../../components/NavBar";
 import Recommendations from "../../components/Recommendations";
-import Map from "../../components/Map";
+import HomeLocationUpdateDialog from "../../components/HomeLocationUpdateDialog";
+
 import Footer from "../../components/Footer";
+
 
 export function FeedPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -20,6 +22,7 @@ export function FeedPage() {
   const [favouriteArtists, setFavouriteArtists] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [homeCity, setHomeCity] = useState(null);
+  const [isFirstLoginSession, setIsFirstLoginSession] = useState(null);
   const { data: session, isPending } = authClient.useSession();
 
   const DEFAULT_CITY = "Manchester";
@@ -61,6 +64,7 @@ export function FeedPage() {
           setSavedEvents(profile.savedEvents || []);
           setBookings(profile.bookings || []);
           setHomeCity(profile.homeLocation?.city || null);
+          setIsFirstLoginSession(profile.isFirstLogin || null);
         })
         .catch((err) => console.error("Profile fetch failed:", err));
     }
@@ -123,6 +127,10 @@ export function FeedPage() {
   return (
     <>
       <NavBar />
+      <HomeLocationUpdateDialog
+        isFirstLoginSession={isFirstLoginSession}
+        setIsFirstLoginSession={setIsFirstLoginSession}
+      />
 
       <Recommendations
         favouriteArtists={favouriteArtists}
