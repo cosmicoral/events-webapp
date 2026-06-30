@@ -2,12 +2,11 @@ import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { authClient } from "../../services/authentication";
 import { getEvents, getCities } from "../../services/events";
-import { getMyProfile } from "../../services/userProfile";
+import { getMyProfile, getMyBookings } from "../../services/userProfile";
 import EventFeed from "../../components/EventFeed";
 import NavBar from "../../components/NavBar";
 import Recommendations from "../../components/Recommendations";
 import Map from "../../components/Map";
-
 import Footer from "../../components/Footer";
 
 export function FeedPage() {
@@ -19,6 +18,7 @@ export function FeedPage() {
   const [savedEvents, setSavedEvents] = useState([]);
   const [eventsError, setEventsError] = useState(null);
   const [favouriteArtists, setFavouriteArtists] = useState([]);
+  const [bookings, setBookings] = useState([]);
   const [homeCity, setHomeCity] = useState(null);
   const { data: session, isPending } = authClient.useSession();
 
@@ -59,6 +59,7 @@ export function FeedPage() {
         .then(({ profile }) => {
           setFavouriteArtists(profile.favouriteArtists || []);
           setSavedEvents(profile.savedEvents || []);
+          setBookings(profile.bookings || []);
           setHomeCity(profile.homeLocation?.city || null);
         })
         .catch((err) => console.error("Profile fetch failed:", err));
@@ -75,11 +76,16 @@ export function FeedPage() {
 
   function handleSavedToggled(eventId) {
     if (session && !isPending) {
-      setSavedEvents((prev) =>
-        prev.includes(eventId)
-          ? prev.filter((id) => id !== eventId)
-          : [...prev, eventId]
-      );
+      setSavedEvents((prev) => {
+        // Safe check since savedEvents is an array of objects
+        const exists = prev.some((e) => (typeof e === 'object' ? e.eventId === eventId : e === eventId));
+        if (exists) {
+          return prev.filter((e) => (typeof e === 'object' ? e.eventId !== eventId : e !== eventId));
+        } else {
+          // Fallback minimal structural object for UI updating until next reload
+          return [...prev, { eventId }];
+        }
+      });
     }
   }
 
@@ -114,23 +120,22 @@ export function FeedPage() {
   if (loading) return <p>Loading events...</p>;
   // if (error) return <p>Something went wrong</p>;
 
-
-
-
-
-
   return (
     <>
       <NavBar />
 
       <Recommendations
         favouriteArtists={favouriteArtists}
-        setFavouriteArtists={setFavouriteArtists}  // ← is this there?
+        setFavouriteArtists={setFavouriteArtists}
         savedEvents={savedEvents}
+        bookings={bookings}
         onSavedToggled={handleSavedToggled}
-        events={events} />
+        events={events}
+      />
+
       <h2>Events!</h2>
       {eventsError && <p>Something went wrong loading events.</p>}
+      
       <section>
         <label>
           City:

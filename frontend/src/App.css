@@ -54,11 +54,21 @@
 }
 
 .recoms {
+  width: 100%;
+  text-align: center;
+}
+
+.recoms h2 {
+  margin-bottom: 1rem;
+}
+
+.recommended-events {
   display: flex;
-  flex-direction: row;
-  width: 100vw;
-  height: fit-content;
   justify-content: center;
+  gap: 2rem;
+  flex-wrap: nowrap;
+  width: 100%;
+  overflow-x: auto;
 }
 
 .hero {
