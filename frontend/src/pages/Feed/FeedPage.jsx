@@ -126,7 +126,12 @@ export function FeedPage() {
 
   const handleFirstLoginComplete = async () => {
     const { profile } = await getMyProfile();
-    setHomeCity(profile.homeLocation?.city || null);
+    const newCity = profile.homeLocation?.city || null;
+    setHomeCity(newCity);
+
+    if (newCity) {
+      updateParam("city", newCity);
+    }
   }
 
   return (
