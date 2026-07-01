@@ -75,7 +75,7 @@ function EventFeedSection({ profile , isLoggedIn}) {
         onChange={updateParam}
       />
       <h1 className="events-title">{`Popular events in ${city}`}  <button onClick={(() => (navigate("/explore")))}>explore</button> </h1>
-     
+
       <EventFeed
         events={filteredEvents}
         favouriteArtists={profile?.favouriteArtists || []}
