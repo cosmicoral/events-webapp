@@ -10,6 +10,7 @@ const inputClass =
 export function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [homeCity, setHomeCity] = useState(null)
@@ -20,6 +21,7 @@ export function LoginPage() {
   const resetFields = () => {
     setEmail('')
     setPassword('')
+    setConfirmPassword('')
     setFirstName('')
     setLastName('')
     setHomeCity(null)
@@ -43,6 +45,12 @@ export function LoginPage() {
   const handleSignUpSubmit = async (e) => {
     e.preventDefault()
     setError(null)
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.")
+      return
+    }
+
     const name = `${firstName} ${lastName}`.trim()
     const { error } = await authClient.signUp.email({
       email,
@@ -53,7 +61,8 @@ export function LoginPage() {
       setError(error.message)
       return
     }
-    // Home city is optional at signup — best-effort, doesn't block navigation
+    
+    // Home city is optional at signup and doesn't block navigation
     if (homeCity) {
       try {
         await updateHomeLocation({ city: homeCity.city, lat: homeCity.lat, long: homeCity.lng })
@@ -101,7 +110,6 @@ export function LoginPage() {
               </div>
               <button
                 type="submit"
-                name="Log in"
                 className="mt-2 w-full rounded-lg bg-primary py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
               >
                 Log in
@@ -164,6 +172,14 @@ export function LoginPage() {
                 required
                 className={inputClass}
               />
+              <input
+                type="password"
+                placeholder="Confirm password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                className={inputClass}
+              />
               <div>
                 <LocationSearch
                   placeholder="Search for your home city..."
@@ -175,7 +191,6 @@ export function LoginPage() {
               </div>
               <button
                 type="submit"
-                name="Sign up"
                 className="mt-2 w-full rounded-lg bg-primary py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
               >
                 Create account

@@ -94,7 +94,7 @@ export function ProfilePage() {
     const [success, setSuccess] = useState(false);
     const [bookings, setBookings] = useState([]);
     const [savedEvents, setSavedEvents] = useState([]);
-    const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
     const { data: session } = authClient.useSession();
     const navigate = useNavigate();
@@ -147,23 +147,21 @@ export function ProfilePage() {
                             </div>
 
                             <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-                                <PopoverTrigger
-                                    render={
-                                        <Button
-                                            type="button"
-                                            variant="outline"
-                                            className="shrink-0 self-start md:self-auto"
-                                        />
-                                    }
-                                >
-                                    Update location
-                                </PopoverTrigger>
-                                <PopoverContent>
+                                <PopoverTrigger render={
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        className="shrink-0 self-start md:self-auto"
+                                    >
+                                        Update location
+                                    </Button>
+                                } />
+                                <PopoverContent className="w-80 overflow-visible" align="end">
                                     <HomeLocationForm
                                         onLocationUpdated={(updatedCity) => {
-                                            setHomeLocation(updatedCity)
-                                            setSuccess(true)
-                                            setIsPopoverOpen(false)
+                                            setHomeLocation(updatedCity);
+                                            setSuccess(true);
+                                            setIsPopoverOpen(false);
                                         }}
                                     />
                                 </PopoverContent>

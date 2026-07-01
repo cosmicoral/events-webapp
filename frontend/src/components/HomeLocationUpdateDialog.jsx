@@ -6,16 +6,16 @@ import {
     Dialog,
     DialogClose,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
 
-
-const HomeLocationUpdateDialog = ({profile, setNewHomeLocation}) => {
+const HomeLocationUpdateDialog = ({ profile, setNewHomeLocation }) => {
     const [error, setError] = useState(null);
-    const [dialogOpen, setDialogOpen] = useState(profile.isFirstLogin)
+    
+    // Only pop-up if it's the user's first login AND they don't have a home location set yet
+    const [dialogOpen, setDialogOpen] = useState(profile.isFirstLogin && !profile.homeLocation?.city)
 
     const setFirstLoginToFalse = async () => {
         await updateIsFirstLogin();
@@ -29,8 +29,6 @@ const HomeLocationUpdateDialog = ({profile, setNewHomeLocation}) => {
         }
     };
 
-    // this will remove the dialog from that point on without re-fetching the profile
-    // (since no changes were made to user's home location)
     const handleClose = async () => {
         try {
             await setFirstLoginToFalse();
@@ -41,28 +39,34 @@ const HomeLocationUpdateDialog = ({profile, setNewHomeLocation}) => {
         }
     }
     
-    return(
-            <Dialog 
-                open={dialogOpen} 
-                onOpenChange={(open) => {
-                    if (!open) {
-                        handleClose();
+    return (
+        <Dialog 
+            open={dialogOpen} 
+            onOpenChange={(open) => {
+                if (!open) {
+                    handleClose();
                 }
-            }}>
-                <DialogContent
-                    showCloseButton={false}
-                >
-                    <p>Set your location for a personalised feed!</p>
-                    <HomeLocationForm 
-                        onLocationUpdated={completeFirstLogin}
-                    />
-                    <p>Want to keep your location as Manchester for now? You can always update it on your profile page.</p>
+            }}
+        >
+            <DialogContent showCloseButton={false}>
+                <p className="font-medium text-foreground">
+                    Want to set a home city for personalized recommendations?
+                </p>
+                
+                <HomeLocationForm 
+                    onLocationUpdated={completeFirstLogin}
+                />
+                
+                {/* Updated descriptive/optional text */}
+                <p className="text-xs text-muted-foreground mt-1">
+                    It looks like you missed this during signup! It's completely optional. If you don't want to set one right now, you can just click close and update it on your profile page anytime.
+                </p>
+                
                 <DialogClose asChild>
                     <Button type="button" onClick={handleClose}>Close</Button>
                 </DialogClose>
-                </DialogContent>
-            </Dialog>
-
+            </DialogContent>
+        </Dialog>
     )
 }
 
