@@ -64,7 +64,7 @@ export function HomePage() {
               SELLS OUT
             </h1>
             <p className="hero-description">
-              EnCore tracks the artists you love and surfaces every gig worth knowing about.
+              enCore tracks the artists you love and surfaces every gig worth knowing about.
             </p>
               <div className="hero-buttons">
               <Link
