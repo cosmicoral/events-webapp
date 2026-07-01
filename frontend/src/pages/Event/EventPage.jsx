@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dialog"
 import { toast } from "sonner";
 import { Bookmark, UserPlus, Tag, MapPin } from "lucide-react"
-
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator";
 
@@ -155,6 +155,14 @@ export function EventPage() {
   return (
     <>
       <NavBar />
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={() => navigate(-1)}
+        className="self-start m-4"
+      >
+        <ArrowLeft /> Back
+      </Button>
       <Dialog open={showAuthPrompt} onOpenChange={setShowAuthPrompt}>
         <DialogContent className="sm:max-w-[400px] text-center">
           <DialogHeader>
