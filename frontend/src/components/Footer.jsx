@@ -1,21 +1,37 @@
-import "./Footer.css";
+import "./ui/Footer.css";
+
+const teamMembers = [
+  { name: "Joe Carroll", github: "https://github.com/jjcrl" },
+  { name: "Kit Trowbridge", github: "https://github.com/Kit-Trowbridge" },
+  { name: "Zein Rafie", github: "https://github.com/zeinrafie1-jpg" },
+  { name: "Coral Han", github: "https://github.com/cosmicoral" },
+  { name: "Maria Karagianni", github: "https://github.com/MaKaragianni" },
+];
 
 function Footer() {
+  const scrollingMembers = [...teamMembers, ...teamMembers];
+
   return (
     <footer className="footer">
       <div className="footer-brand">
         <span className="footer-logo">En<span>Core</span></span>
         <p>© 2026 EnCore. Built at Makers Academy</p>
       </div>
+
       <div className="footer-team">
         <p className="footer-team-title">Our Team</p>
-        <ul>
-          <li>Joe Carroll</li>
-          <li>Kit Trowbridge</li>
-          <li>Zein Rafie</li>
-          <li>Coral Han</li>
-          <li>Maria Karagianni</li>
-        </ul>
+
+        <div className="footer-team-marquee">
+          <ul>
+            {scrollingMembers.map((member, index) => (
+              <li key={`${member.name}-${index}`}>
+                <a href={member.github} target="_blank" rel="noreferrer">
+                {member.name} <span className="footer-link-icon">↗</span>
+              </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </footer>
   );

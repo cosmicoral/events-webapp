@@ -9,7 +9,7 @@
 .footer-brand p {
   color: #6b7280;
   font-size: 13px;
-  margin: 8px 0 0;
+  margin-top: 8px;
 }
 
 .footer-logo {
@@ -26,19 +26,58 @@
   font-weight: 700;
   font-size: 13px;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #0a1628;
-  margin: 0 0 12px;
+  letter-spacing: .08em;
+  margin-bottom: 12px;
 }
 
-.footer-team ul {
+.footer-team-marquee {
+  height: 120px;
+  overflow: hidden;
+  position: relative;
+}
+
+.footer-team-marquee ul {
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  animation: scrollTeam 16s linear infinite;
+}
+
+.footer-team-marquee:hover ul {
+  animation-play-state: paused;
 }
 
 .footer-team li {
   font-size: 14px;
+}
+
+.footer-team a {
   color: #6b7280;
-  line-height: 1.8;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-team a:hover {
+  color: #e65386;
+}
+
+.footer-link-icon {
+  font-size: 12px;
+  margin-left: 6px;
+  opacity: 0.7;
+}
+
+@keyframes scrollTeam {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-50%);
+  }
 }
