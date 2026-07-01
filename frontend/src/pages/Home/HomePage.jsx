@@ -9,6 +9,7 @@ import EventCarousel from "../../components/EventCarousel";
 import { getEvents } from "../../services/events";
 import { getMyProfile } from "../../services/userProfile";
 import { authClient } from "../../services/authentication";
+import gradientLogo from "../../assets/logo-for-hero-2.svg"
 
 export function HomePage() {
   const [homeEvents, setHomeEvents] = useState([]);
@@ -83,10 +84,9 @@ export function HomePage() {
               </>
             }
         right={
-          <div className="hero-artwork-placeholder">
-            <div className="hero-artwork-card large"></div>
-            <div className="hero-artwork-card small"></div>
-          </div>
+
+          <img src={gradientLogo} alt="enCore logo"/>
+
         }
       />
       <EventCarousel
