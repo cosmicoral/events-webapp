@@ -6,11 +6,12 @@ import NavBar from "../../components/NavBar"
 import Recommendations from "../../components/Recommendations"
 import EventFeedSection from "../../components/EventFeedSection"
 import Footer from "../../components/Footer"
+import HomeLocationUpdateDialog from "../../components/HomeLocationUpdateDialog"
 
 export function FeedPage() {
   const { data: session, isPending } = authClient.useSession()
   const [profile, setProfile] = useState(null)
-  const [loading, setLoading] = useState(true)
+  // const [loading, setLoading] = useState(true)
   const [profileLoading, setProfileLoading] = useState(true)
 
   useEffect(() => {
@@ -29,10 +30,22 @@ export function FeedPage() {
 
   if (isPending) return <p>Loading...</p>
 
+  const setNewHomeLocation = async () => {
+    const { profile } = await getMyProfile();
+    setProfile(profile);
+  }
+
+
   return (
     <>
       <NavBar />
       {session && !profileLoading && <Recommendations profile={profile} />}
+      {session && !profileLoading && profile &&
+        <HomeLocationUpdateDialog 
+          profile={profile}           
+          setNewHomeLocation={setNewHomeLocation}
+        />
+      }
       <EventFeedSection profile={profile} isLoggedIn={!!session} />
       <Footer />
     </>

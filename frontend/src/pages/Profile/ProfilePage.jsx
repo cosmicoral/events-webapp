@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
-import { getMyProfile, getMyBookings, updateHomeLocation, getSavedEvents } from "../../services/userProfile";
+import { getMyProfile, getMyBookings, getSavedEvents } from "../../services/userProfile";
 import { authClient } from "../../services/authentication";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
-import LocationSearch from "../../components/LocationSearch";
+import HomeLocationForm from "@/components/HomeLocationForm";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { Button } from "@/components/ui/button";
 
 function formatDate(dateStr) {
     if (!dateStr) return "TBC";
@@ -66,10 +72,9 @@ export function ProfilePage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [homeLocation, setHomeLocation] = useState(null);
-    const [success, setSuccess] = useState(false);
-    const [selectedLocation, setSelectedLocation] = useState(null)
     const [bookings, setBookings] = useState([]);
     const [savedEvents, setSavedEvents] = useState([]);
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false)
 
     const { data: session } = authClient.useSession();
     const navigate = useNavigate();
@@ -85,23 +90,6 @@ export function ProfilePage() {
             .catch((err) => setError(err))
             .finally(() => setLoading(false));
     }, []);
-
-
-    const handleLocationSubmit = async (e) => {
-        e.preventDefault()
-        if (!selectedLocation) return
-        try {
-            const updatedCity = await updateHomeLocation({ 
-                city: selectedLocation.city, 
-                lat: selectedLocation.lat, 
-                long: selectedLocation.lng  // ← Geoapify uses lng, backend expects long
-            })
-            setHomeLocation(updatedCity)
-            setSuccess(true)
-        } catch (err) {
-            setError(err)
-        }
-    }
 
     if (error) return <p>{error.message}</p>;
     if (loading) return <p>Loading profile…</p>;
@@ -136,13 +124,21 @@ export function ProfilePage() {
 
             {profile && (
                 <div>
-                    <form onSubmit={handleLocationSubmit}>
-                        <p><strong>Your location:</strong> {homeLocation}</p>
-                        <LocationSearch onCitySelect={({ city, lat, lng }) => {
-                            setSelectedLocation({ city, lat, lng })
-                        }} />
-                        <button type="submit">Update</button>
-                    </form>
+                    <p><strong>Your location:</strong> {homeLocation}</p>
+                    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+                        <PopoverTrigger>
+                            <Button>Edit</Button>
+                        </PopoverTrigger>
+                        <PopoverContent>
+                            <HomeLocationForm 
+                                onLocationUpdated={(updatedCity) => {
+                                    setHomeLocation(updatedCity)
+                                    setIsPopoverOpen(false)
+                                }}
+                            />
+                        </PopoverContent>
+                    </Popover>
+
                     <p><strong>Your favourite artists:</strong> </p>
                     {profile.favouriteArtists.length < 1 ? (
                         <p><i>Follow some artists for personalised recommendations!</i></p>
