@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { authClient } from "../../services/authentication"
+import mutedGradientLogo from "../../assets/logo-gradient-muted.svg"
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
@@ -61,7 +62,7 @@ export function ForgotPasswordPage() {
     <div className="min-h-screen w-screen flex items-center justify-center bg-muted px-4 py-12">
       <div className="w-full max-w-sm rounded-2xl bg-card shadow-lg p-8">
         <Link to="/" className="font-heading text-2xl tracking-tight text-primary">
-          En<span className="text-secondary">Core</span>
+          <img src={mutedGradientLogo} alt="enCore Logo" className="h-12"/>
         </Link>
 
         {sent ? (

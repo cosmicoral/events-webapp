@@ -48,14 +48,17 @@
   --sidebar-ring: oklch(0.622 0.167 2.522);
 }
 
-a {
-  font-weight: 500;
-  color: var(--secondary);
-  text-decoration: inherit;
-}
+/* added layer to be able to see nav styling updates */
+@layer base {
+  a {
+    font-weight: 500;
+    color: var(--secondary);
+    text-decoration: inherit;
+  }
 
-a:hover {
-  color: oklch(0.482 0.136 3.383);
+  a:hover {
+    color: oklch(0.482 0.136 3.383);
+  }
 }
 
 body {

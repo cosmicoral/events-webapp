@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { authClient } from "../../services/authentication"
+import mutedGradientLogo from "../../assets/logo-gradient-muted.svg"
 
 const inputClass =
   "w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary transition-colors"
@@ -44,7 +45,7 @@ export function ResetPasswordPage() {
     <div className="min-h-screen w-screen flex items-center justify-center bg-muted px-4 py-12">
       <div className="w-full max-w-sm rounded-2xl bg-card shadow-lg p-8">
         <Link to="/" className="font-heading text-2xl tracking-tight text-primary">
-          En<span className="text-secondary">Core</span>
+          <img src={mutedGradientLogo} alt="enCore Logo" className="h-12"/>
         </Link>
         <p className="mt-1 text-sm text-muted-foreground">Choose a new password</p>
  
