@@ -28,7 +28,8 @@ export default function EventCard({ event, isLoggedIn, savedEvents }) {
     const [showAuthPrompt, setShowAuthPrompt] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
 
-    function handleCardClick() {
+    function handleCardClick(e) {
+        e.stopPropagation();
         navigate(`/events/${event._id}`);
     }
 
@@ -66,9 +67,9 @@ export default function EventCard({ event, isLoggedIn, savedEvents }) {
         );
     }
 
-    let sizes = event.images && event.images.length > 0 
-    ? pickEventCardImage(event.images) 
-    : null;
+    let sizes = event.images && event.images.length > 0
+        ? pickEventCardImage(event.images)
+        : null;
 
     return (
         <div
@@ -76,11 +77,10 @@ export default function EventCard({ event, isLoggedIn, savedEvents }) {
             onClick={handleCardClick}
             role="button"
             tabIndex={0}
-            onKeyDown={(e) => e.key === "Enter" && handleCardClick()}
             data-testid="event-card"
         >
             <Dialog open={showAuthPrompt} onOpenChange={setShowAuthPrompt}>
-                <DialogContent className="sm:max-w-[400px] text-center">
+                <DialogContent className="sm:max-w-[400px] text-center" onClick={(e) => e.stopPropagation()}>
                     <DialogHeader>
                         <DialogTitle>Join enCore</DialogTitle>
                         <DialogDescription>
