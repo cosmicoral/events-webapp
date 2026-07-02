@@ -44,6 +44,9 @@ export function FeedPage() {
       </div>
       {session && !profileLoading && <Recommendations profile={profile} isLoggedIn={!!session} />}
       <EventFeedSection profile={profile} isLoggedIn={!!session} />
+      {session && !profileLoading && profile && (
+        <HomeLocationUpdateDialog profile={profile} setNewHomeLocation={setNewHomeLocation} />
+      )}
       <Footer />
     </>
   )
