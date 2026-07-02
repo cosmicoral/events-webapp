@@ -5,6 +5,7 @@ import NavBar from '@/components/NavBar';
 import Footer from '@/components/Footer';
 import { authClient } from '@/services/authentication';
 import { getMyProfile } from '@/services/userProfile';
+import { format } from "date-fns"
 
 export function MapPage(props) {
     const { data: session, isPending } = authClient.useSession()
@@ -20,12 +21,13 @@ export function MapPage(props) {
                 setProfile(profile)
                 const { events } = await getEvents({
                     city: profile.homeLocation?.city || "Manchester",
-                    limit: 0
+                    limit: 0,
+                    from: format(new Date(), "yyyy-MM-dd")
                 })
                 setEvents(events)
             })
             .catch(async () => {
-                const { events } = await getEvents({ city: "Manchester", limit: 0 })
+                const { events } = await getEvents({ city: "Manchester", limit: 0, from: format(new Date(), "yyyy-MM-dd") })
                 setEvents(events)
             })
             .finally(() => setLoading(false))

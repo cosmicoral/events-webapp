@@ -126,3 +126,24 @@
 }
 
 
+
+.gm-style-iw.gm-style-iw-c {
+    box-shadow: none !important;
+    border: solid 3px  whitesmoke
+}
+
+.gm-style-iw-tc::after {
+    box-shadow: none !important;
+}
+
+.gm-style-iw-tc {
+    display: none !important;
+}
+
+.gm-style-iw button.gm-ui-hover-effect {
+    display: none !important;
+}
+
+.gm-style-iw-chr {
+    display: none !important;
+}
