@@ -10,7 +10,7 @@
   padding: 1vw;
 }
 
-.centre{
+.centre {
   width: 100vw;
   padding: 5rem 6rem;
   display: flex;
@@ -46,7 +46,7 @@
   justify-content: center;
 }
 
-.foryou-banner{
+.foryou-banner {
   padding-top: 5rem;
 }
 
@@ -106,10 +106,12 @@
   width: 40%;
   height: fit-content;
 }
+
 .event-details {
   width: 40%;
   height: fit-content;
 }
+
 .map-page {
   width: 100vw;
   height: 100vh;
@@ -117,28 +119,4 @@
   z-index: 0;
 }
 
-.calender-page {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.calender-grid {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  min-height: 0;
-}
-
-.calender-cell {
-  border: 1px solid #ccc;
-  overflow: scroll;
-  min-height: 0;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap:1rem;
-}
 
