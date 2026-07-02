@@ -6,12 +6,16 @@ import Footer from '@/components/Footer';
 import { authClient } from '@/services/authentication';
 import { getMyProfile } from '@/services/userProfile';
 import { format } from "date-fns"
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export function MapPage(props) {
     const { data: session, isPending } = authClient.useSession()
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true)
     const [profile, setProfile] = useState(null)
+    const navigate = useNavigate()
 
 
     useEffect(() => {
@@ -38,6 +42,17 @@ export function MapPage(props) {
         <>
             <NavBar />
             <div className='map-page'>
+                <div className="relative flex-1">
+                    <Button
+                        onClick={() => navigate(-1)}
+                        className="absolute top-20 left-10 z-10 drop-shadow-2xl"
+                        variant="secondary"
+                    >
+                        <ArrowLeft/>
+                        Back
+                    </Button>
+                    <Map events={events} height={"100%"} width={"100%"} />
+                </div>
                 <Map events={events} height={"100%"} width={"100%"} />
             </div>
             <Footer />
