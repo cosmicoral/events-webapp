@@ -28,9 +28,6 @@ export default function EventCard({ event, isLoggedIn, savedEvents = [] }) {
     const [showAuthPrompt, setShowAuthPrompt] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
 
-    // savedEvents comes from the user's profile — sync our local "is this
-    // card saved" state with it, otherwise every card starts assuming
-    // "not saved" even if the user already bookmarked it.
     useEffect(() => {
         setIsSaved(savedEvents.some((e) => e.eventId === event._id));
     }, [savedEvents, event._id]);
