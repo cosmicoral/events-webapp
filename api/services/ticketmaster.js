@@ -59,6 +59,7 @@ const fetchAndStoreEventsForCity = async (city) => {
         sort: "date,asc",
         size: "50",
         classificationName: "Music",
+        countryCode: "GB",
         startDateTime: now.toISOString().replace(/\.\d{3}Z$/, "Z"),
         endDateTime: thirtyDaysLater.toISOString().replace(/\.\d{3}Z$/, "Z"),
         })

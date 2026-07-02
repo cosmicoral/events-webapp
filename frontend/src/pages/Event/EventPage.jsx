@@ -22,6 +22,7 @@ import { Bookmark, UserPlus, Tag, MapPin } from "lucide-react"
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator";
+import { TicketCheck } from "lucide-react";
 
 export function EventPage() {
   const { id } = useParams();
@@ -153,6 +154,24 @@ export function EventPage() {
     return timeString.slice(0, 5); // takes "19:00" from "19:00:00"
   }
 
+  function pickEventCardImage(images) {
+    const targetRatio = 16 / 9;
+    const minWidth = 640; // covers most card sizes at 2x density
+    const sixteenNine = images
+      .filter(img => Math.abs(img.width / img.height - targetRatio) < 0.05)
+      .sort((a, b) => a.width - b.width);
+
+    return (
+      sixteenNine.find(img => img.width >= minWidth)
+      ?? sixteenNine.at(-1)
+      ?? images.sort((a, b) => b.width - a.width)[0]
+    );
+  }
+
+  let sizes = event.images && event.images.length > 0
+    ? pickEventCardImage(event.images)
+    : null;
+
   return (
     <>
       <NavBar />
@@ -229,15 +248,24 @@ export function EventPage() {
 
       <div className="page items-start">
         <div className="event-mini sticky top-12 self-start">
-          <img src={event.images[0].url} className="rounded object-cover" />
+          <img src={sizes.url} className="rounded object-cover" />
           <p className="font-bold text-3xl text-primary">{event.artist}</p>
           <div className="flex flex-row gap-3">
             {[... new Set(event.tags)].map((t) => <p key={t} className="flex flex-row gap-1 font-bold m-0 text-primary"><Tag />{t}</p>)}
           </div>
           <Separator />
-          <div className="flex flex-row gap-2">
-            <Button onClick={handleSaveArtist} disabled={isPending}><UserPlus /></Button>
-            <Button onClick={handleSaveToFavourites} disabled={isPending}><Bookmark /></Button>
+          <div className="flex flex-col gap-2 w-fit">
+            <Button
+              onClick={handleBuyTickets}
+              disabled={isButtonDisabled}
+              aria-label="Buy Tickets"
+              variant="secondary"
+            >
+              <TicketCheck/>
+              {buttonLabel()}
+            </Button>
+            <Button onClick={handleSaveArtist} disabled={isPending} variant="secondary"><UserPlus />Follow Artist</Button>
+            <Button onClick={handleSaveToFavourites} disabled={isPending} variant="secondary" ><Bookmark />Bookmark Event</Button>
           </div>
 
         </div>
@@ -248,21 +276,12 @@ export function EventPage() {
             <p className="font-bold m-0 text-primary">{event.venue.name}</p>
           </div>
           <p className="font-semibold text-secondary">{formatDate(event.date)}, {formatTime(event.time)}</p>
-          <div className="py-2">
-            <Button
-              onClick={handleBuyTickets}
-              disabled={isButtonDisabled}
-              aria-label="Buy Tickets"
-            >
-              {buttonLabel()}
-            </Button>
-          </div>
           {bookingState === "error" && (
             <p role="alert">Something went wrong. Please try again.</p>
           )}
-          <p className="text-2xl font-semibold text-primary">Event Details</p>
+          <p className="text-2xl font-semibold text-primary pt-5">Event Details</p>
           <Separator />
-          {event.description.split(".").map((line) => (
+          {event?.description.split(".").map((line) => (
             <p key={line[0]} className="text-l">{line}</p>
           ))}
           <div className="flex flex-col gap-2 pb-5 pt-5 text-primary">
