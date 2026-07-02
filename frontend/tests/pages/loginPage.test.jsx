@@ -98,6 +98,16 @@ describe("LoginPage", () => {
       password: "password123"
     })
   })
+  test("shows the confirm password field on the sign up form", () => {
+    render(
+      <MemoryRouter>
+        <LoginPage />
+      </MemoryRouter>
+    )
+    fireEvent.click(screen.getByTestId("toggle-auth"))
+    expect(screen.getByPlaceholderText("Confirm password")).toBeTruthy()
+  })
+
   test("combines first and last name into a single name on sign up", async () => {
     authClient.signUp.email.mockResolvedValue({ data: {}, error: null })
 
@@ -120,6 +130,9 @@ describe("LoginPage", () => {
     fireEvent.change(screen.getByPlaceholderText("Password"), {
       target: { value: "password123" }
     })
+    fireEvent.change(screen.getByPlaceholderText("Confirm password"), {
+      target: { value: "password123" }
+    })
     fireEvent.click(screen.getByRole("button", { name: "Create account" }))
 
     expect(authClient.signUp.email).toHaveBeenCalledWith({
@@ -127,5 +140,35 @@ describe("LoginPage", () => {
       password: "password123",
       name: "Zein Smith"
     })
+  })
+
+  test("shows an error and does not call signUp when passwords do not match", async () => {
+    render(
+      <MemoryRouter>
+        <LoginPage />
+      </MemoryRouter>
+    )
+
+    fireEvent.click(screen.getByTestId("toggle-auth"))
+    fireEvent.change(screen.getByPlaceholderText("First name"), {
+      target: { value: "Zein" }
+    })
+    fireEvent.change(screen.getByPlaceholderText("Last name"), {
+      target: { value: "Smith" }
+    })
+    fireEvent.change(screen.getByPlaceholderText("Email"), {
+      target: { value: "zein@test.com" }
+    })
+    fireEvent.change(screen.getByPlaceholderText("Password"), {
+      target: { value: "password123" }
+    })
+    fireEvent.change(screen.getByPlaceholderText("Confirm password"), {
+      target: { value: "somethingElse" }
+    })
+    fireEvent.click(screen.getByRole("button", { name: "Create account" }))
+
+    const error = await screen.findByText("Passwords do not match.")
+    expect(error).toBeTruthy()
+    expect(authClient.signUp.email).not.toHaveBeenCalled()
   })
 })

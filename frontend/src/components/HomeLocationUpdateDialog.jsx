@@ -14,8 +14,11 @@ import {
 const HomeLocationUpdateDialog = ({ profile, setNewHomeLocation }) => {
     const [error, setError] = useState(null);
     
-    // Only pop-up if it's the user's first login AND they don't have a home location set yet
-    const [dialogOpen, setDialogOpen] = useState(profile.isFirstLogin && !profile.homeLocation?.city)
+    // Only pop-up if it's the user's first login AND they've never explicitly
+    // set a home location themselves. We can't rely on homeLocation.city being
+    // empty here, because the schema defaults it to "Manchester" for everyone -
+    // hasSetHomeLocation is the source of truth for "did the user actually pick one".
+    const [dialogOpen, setDialogOpen] = useState(profile.isFirstLogin && !profile.hasSetHomeLocation)
 
     const setFirstLoginToFalse = async () => {
         await updateIsFirstLogin();
@@ -62,8 +65,8 @@ const HomeLocationUpdateDialog = ({ profile, setNewHomeLocation }) => {
                     It looks like you missed this during signup! It's completely optional. If you don't want to set one right now, you can just click close and update it on your profile page anytime.
                 </p>
                 
-                <DialogClose asChild>
-                    <Button type="button" onClick={handleClose}>Close</Button>
+                <DialogClose render={<Button type="button" onClick={handleClose} />}>
+                    Close
                 </DialogClose>
             </DialogContent>
         </Dialog>
