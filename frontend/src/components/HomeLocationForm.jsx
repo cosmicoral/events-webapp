@@ -31,7 +31,7 @@ const HomeLocationForm = ({ onLocationUpdated }) => {
             <LocationSearch onCitySelect={({ city, lat, lng }) => {
                 setSelectedLocation({ city, lat, lng })
             }} />
-            <Button type="submit">Update</Button>
+            <Button type="submit" className="mt-2">Update</Button>
         </form>
     )
 }

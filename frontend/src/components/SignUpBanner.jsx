@@ -10,7 +10,7 @@ function SignUpBanner() {
     <section className="signup-banner">
       <div>
         <h2>NEVER MISS A SHOW AGAIN</h2>
-        <p>Follow artists, get notified the moment tickets drop.</p>
+        <p>Follow artists, get personalised recommendations.</p>
       </div>
 
       <Link
