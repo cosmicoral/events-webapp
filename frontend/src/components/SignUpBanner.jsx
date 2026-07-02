@@ -1,16 +1,26 @@
-import React from 'react'
+import { Link } from "react-router-dom";
+import { authClient } from "../services/authentication";
+import "./ui/SignUpBanner.css";
 
-function SignUpBanner(props) {
+function SignUpBanner() {
+  const { data: session } = authClient.useSession();
+  const isLoggedIn = !!session?.user;
+
   return (
-    <div className='banner'>
-      <div className='left'>
-        <p>{props.left}</p>
+    <section className="signup-banner">
+      <div>
+        <h2>NEVER MISS A SHOW AGAIN</h2>
+        <p>Follow artists, get notified the moment tickets drop.</p>
       </div>
-      <div className='right'>
-        <p>{props.right}</p>
-      </div>
-    </div>
-  )
+
+      <Link
+        to={isLoggedIn ? "/profile" : "/login"}
+        className="signup-banner-button"
+      >
+        {isLoggedIn ? "Personalise my music" : "Create account"}
+      </Link>
+    </section>
+  );
 }
 
-export default SignUpBanner
+export default SignUpBanner;
