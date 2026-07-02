@@ -54,7 +54,6 @@ function EventFeedSection({ profile, isLoggedIn }) {
       .then((data) => {
         setEvents(data.events)
         setTotalEvents(data.totalEvents)
-        console.log("topTags:", data.topTags)
         setTopTags(data.topTags)
       })
       .catch((err) => setEventsError(err))
