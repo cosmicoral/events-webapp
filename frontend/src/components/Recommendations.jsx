@@ -4,7 +4,7 @@ import { getEvents } from '@/services/events'
 
 function Recommendations({ profile, isLoggedIn }) {
     const [events, setEvents] = useState([]);
-    const [loading,setLoading] = useState(true)
+    const [loading, setLoading] = useState(true)
     useEffect(() => {
         if (!profile?.homeLocation?.city) return;
         getEvents({
@@ -14,7 +14,7 @@ function Recommendations({ profile, isLoggedIn }) {
         })
             .then((data) => setEvents(data.events))
             .catch((err) => console.error(err))
-            .finally(()=> setLoading(false))
+            .finally(() => setLoading(false))
     }, [profile?.homeLocation?.city])
 
     if (!profile) return null
@@ -76,15 +76,15 @@ function Recommendations({ profile, isLoggedIn }) {
 
     const hasActivity = profile.favouriteArtists.length > 0 || savedEventObjects.length > 0
 
-    if(loading) return <p>loading...</p>
+    if (loading) return <p>loading...</p>
 
     return (
         < div className='foryou-banner'>
             <p className='pl-26 text-3xl font-medium pb-10 text-muted-foreground'>Discover more events just for you.</p>
             {!hasActivity ? (
-                <p>Save events or follow artists to see personalised recommendations</p>
+                <p className="pl-26">Save events or follow artists to see personalised recommendations</p>
             ) : recommendedEvents.length === 0 ? (
-                <p>No new recommendations right now — check back after more events are added!</p>
+                <p className="pl-26">No new recommendations right now — check back after more events are added!</p>
             ) : (
                 <div className="foryou">
                     {recommendedEvents.slice(0, 5).map(event => (
