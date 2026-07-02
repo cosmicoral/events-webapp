@@ -80,7 +80,7 @@ function Recommendations({ profile, isLoggedIn }) {
 
     return (
         < div className='foryou-banner'>
-            <p className='pl-26 text-3xl font-medium pb-10 text-muted-foreground'>Discover more events just for you.</p>
+            <p className='pl-26 text-2xl font-medium pb-5 text-muted-foreground'>Our top picks for you.</p>
             {!hasActivity ? (
                 <p>Save events or follow artists to see personalised recommendations</p>
             ) : recommendedEvents.length === 0 ? (
