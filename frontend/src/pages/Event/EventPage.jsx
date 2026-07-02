@@ -88,15 +88,14 @@ export function EventPage() {
       setShowAuthPrompt(true);
       return;
     }
-
     const wasSaved = isSaved;
     try {
       await toggleSavedEvent(event._id);
       setIsSaved(!wasSaved);
       toast.success(
         wasSaved
-          ? `${event.name} removed from favourites`
-          : `${event.name} added to favourites`
+          ? `Event removed from saved events`
+          : `Event added to saved events`
       );
     } catch {
       toast.error("Failed to update favourites");
@@ -110,7 +109,6 @@ export function EventPage() {
       setShowAuthPrompt(true);
       return;
     }
-
     const wasFaved = isArtistFaved;
     try {
       await toggleFavouriteArtists(event.artist);
@@ -261,7 +259,7 @@ export function EventPage() {
               aria-label="Buy Tickets"
               variant="secondary"
             >
-              <TicketCheck/>
+              <TicketCheck />
               {buttonLabel()}
             </Button>
             <Button onClick={handleSaveArtist} disabled={isPending} variant="secondary"><UserPlus />Follow Artist</Button>
@@ -281,7 +279,7 @@ export function EventPage() {
           )}
           <p className="text-2xl font-semibold text-primary pt-5">Event Details</p>
           <Separator />
-          {event?.description.split(".").map((line) => (
+          {event.description && event.description.split(".").map((line) => (
             <p key={line[0]} className="text-l">{line}</p>
           ))}
           <div className="flex flex-col gap-2 pb-5 pt-5 text-primary">
