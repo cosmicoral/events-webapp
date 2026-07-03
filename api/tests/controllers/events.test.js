@@ -37,11 +37,15 @@ function makeReqRes(query = {}, params = {}) {
     return { req, res }
 }
 
-// Helper to mock Event.find().sort() chain
+// Helper to mock Event.find().sort().skip().limit() chain
 function mockFind(returnValue) {
-    Event.find.mockReturnValue({
-        sort: jest.fn().mockResolvedValue(returnValue),
-    })
+    const query = {
+        sort: jest.fn().mockReturnThis(),
+        skip: jest.fn().mockReturnThis(),
+        limit: jest.fn().mockReturnThis(),
+        then: (resolve) => resolve(returnValue),
+    }
+    Event.find.mockReturnValue(query)
 }
 
 describe("getEvents", () => {
@@ -57,6 +61,11 @@ describe("getEvents", () => {
         jest.clearAllMocks()
         // Default mock — tests can override
         ensureEventsForCity.mockResolvedValue({ refreshed: false })
+        // getEvents also calls Event.aggregate (for topTags) and
+        // Event.countDocuments (for totalEvents). Without these, the
+        // auto-mocked methods return undefined and topTags.map(...) throws.
+        Event.aggregate.mockResolvedValue([])
+        Event.countDocuments.mockResolvedValue(0)
     })
 
     test("returns 200 and events for the requested city", async () => {
@@ -66,7 +75,9 @@ describe("getEvents", () => {
         await getEvents(req, res)
 
         expect(res.status).toHaveBeenCalledWith(200)
-        expect(res.json).toHaveBeenCalledWith({ events: [fakeEvents[0]] })
+        expect(res.json).toHaveBeenCalledWith(
+            expect.objectContaining({ events: [fakeEvents[0]] })
+        )
     })
 
     test("calls ensureEventsForCity with the requested city", async () => {
@@ -88,7 +99,9 @@ describe("getEvents", () => {
 
         // Refresh failed, but we still serve cached data
         expect(res.status).toHaveBeenCalledWith(200)
-        expect(res.json).toHaveBeenCalledWith({ events: [fakeEvents[0]] })
+        expect(res.json).toHaveBeenCalledWith(
+            expect.objectContaining({ events: [fakeEvents[0]] })
+        )
     })
 
     test("passes a city filter when city query param is provided", async () => {
@@ -144,7 +157,10 @@ describe("getEvents", () => {
 
     test("returns 500 when the database throws", async () => {
         Event.find.mockReturnValue({
-            sort: jest.fn().mockRejectedValue(new Error("DB connection lost")),
+            sort: jest.fn().mockReturnThis(),
+            skip: jest.fn().mockReturnThis(),
+            limit: jest.fn().mockReturnThis(),
+            then: (resolve, reject) => reject(new Error("DB connection lost")),
         })
 
         const { req, res } = makeReqRes({ city: "Manchester" })
