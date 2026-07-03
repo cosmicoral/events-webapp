@@ -103,7 +103,7 @@ export default function EventCard({ event, isLoggedIn, savedEvents = [] }) {
                 </DialogContent>
             </Dialog>
             <div className="relative">
-                {event.images && (
+                {sizes && (
                     <img
                         src={sizes.url}
                         alt={`${event.name} image`}

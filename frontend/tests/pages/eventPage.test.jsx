@@ -6,11 +6,19 @@ import { vi } from "vitest";
 
 import { EventPage } from "../../src/pages/Event/EventPage";
 import { getEventById, getPurchaseLink } from "../../src/services/events";
+import { getMyProfile, addBooking } from "../../src/services/userProfile";
 import { authClient } from "../../src/services/authentication";
 
 vi.mock("../../src/services/events", () => ({
   getEventById: vi.fn(),
   getPurchaseLink: vi.fn()
+}));
+
+vi.mock("../../src/services/userProfile", () => ({
+  getMyProfile: vi.fn(),
+  addBooking: vi.fn(),
+  toggleSavedEvent: vi.fn(),
+  toggleFavouriteArtists: vi.fn()
 }));
 
 vi.mock("../../src/services/authentication", () => ({
@@ -64,6 +72,10 @@ const renderPage = (initialSession = null) => {
 describe("EventPage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    getMyProfile.mockResolvedValue({
+      profile: { savedEvents: [], favouriteArtists: [] }
+    });
+    addBooking.mockResolvedValue({});
   });
 
   test("shows loading state initially", () => {
