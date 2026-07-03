@@ -67,11 +67,11 @@ function Map(props) {
                                 lng: group.venue.location.coordinates[0]
                             }}
                             onClick={() => {
-                                if (group.events.length === 1) {
-                                    navigate(`/events/${group.events[0]._id}`)
-                                } else {
+                              //  if (group.events.length === 1) {
+                                //    navigate(`/events/${group.events[0]._id}`)
+                               // } else {
                                     setSelected(group)
-                                }
+                                //}
                             }}
                         />
                     ))}
