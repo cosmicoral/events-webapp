@@ -85,7 +85,7 @@ function EventFeedSection({ profile, isLoggedIn }) {
       <div className="flex flex-row gap-5 items-center">
         <div className="flex flex-row gap-2 items-center py-3">
           <p className="text-primary font-semibold text-5xl py-2">{`Popular Events`}</p>
-          <p className="text-secondary font-semibold text-5xl py-2">{`in ${city || "England"}`}</p>
+          <p className="text-secondary font-semibold text-5xl py-2">{`in ${city || "Great Britain"}`}</p>
         </div>
         <MapPinned className="text-secondary translate-y-0.5" size={36} onClick={(() => (navigate("/explore")))} />
       </div>
