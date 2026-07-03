@@ -152,6 +152,7 @@ export function EventPage() {
       >
         <ArrowLeft /> Back
       </Button>
+
       <Dialog open={showAuthPrompt} onOpenChange={setShowAuthPrompt}>
         <DialogContent className="sm:max-w-[400px] text-center">
           <DialogHeader>
@@ -162,11 +163,8 @@ export function EventPage() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex flex-col gap-2 sm:flex-col">
-            <Button onClick={() => navigate("/login")}>
-              Create Account
-            </Button>
-            <Button variant="outline" onClick={() => navigate("/login")}>
-              I already have an account
+            <Button onClick={() => navigate("/login")} data-testid='login'>
+              Create Account / Sign in 
             </Button>
           </DialogFooter>
         </DialogContent>

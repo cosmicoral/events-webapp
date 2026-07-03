@@ -111,6 +111,7 @@ export default function EventCard({ event, isLoggedIn, savedEvents }) {
                     size="icon"
                     onClick={handleSaveToFavourites}
                     className="absolute bottom-2 right-2"
+                    data-testid ="save-event-btn"
                 >
                     <Bookmark />
                 </Button>
